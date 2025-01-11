@@ -54,13 +54,13 @@ include "koneksi.php";
             <a class="nav-link active" href="#home">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#artikel">Artikel</a>
+            <a class="nav-link" href="#article">Artikel</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#galeri">Galeri</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#Schedule">Schedule</a>
+            <a class="nav-link" href="#schedule">Schedule</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="login.php" target="_blank">Login</a>
@@ -126,100 +126,131 @@ include "koneksi.php";
 </section>
 <!-- article end -->
 
-  <section id="galeri" class="container my-5">
+<section id="galeri" class="container my-5">
     <h2 class="text-center mb-4"><b>Gallery</b></h2>
     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-          aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-          aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-          aria-label="Slide 3"></button>
-      </div>
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="img/foto2.jpg" class="d-block w-100" alt="Gambar 1" />
+        <div class="carousel-indicators">
+            <?php
+            $sql = "SELECT * FROM galeri ORDER BY tanggal DESC";
+            $hasil = $conn->query($sql); 
+            $total_images = $hasil->num_rows;
+            $counter = 0;
+            while($row = $hasil->fetch_assoc()){
+                $active_class = ($counter == 0) ? 'active' : ''; // Add 'active' class to the first item
+                echo '<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="' . $counter . '" class="' . $active_class . '" aria-current="true" aria-label="Slide ' . ($counter + 1) . '"></button>';
+                $counter++;
+            }
+            ?>
         </div>
-        <div class="carousel-item">
-          <img src="img/foto3.jpg" class="d-block w-100" alt="Gambar 2" />
+
+        <div class="carousel-inner">
+            <?php
+            $hasil->data_seek(0); // Reset the result pointer
+            $counter = 0;
+            while($row = $hasil->fetch_assoc()){
+                $active_class = ($counter == 0) ? 'active' : ''; // Add 'active' class to the first item
+                echo '<div class="carousel-item ' . $active_class . '">';
+                echo '<img src="img/' . $row["gambar"] . '" class="d-block w-100" alt="...">';
+                echo '<div class="carousel-caption d-none d-md-block">';
+                echo '<h5>' . $row["judul"] . '</h5>';
+                
+                echo '</div>';
+                echo '</div>';
+                $counter++;
+            }
+            ?>
         </div>
-        <div class="carousel-item">
-          <img src="img/foto4.jpg" class="d-block w-100" alt="Gambar 3" />
-        </div>
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-        data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-        data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
-  </section>
+</section>
 
 
-  <section id="schedule" class="text-center p-5 bg-body-light">
-    <div class="container-shedulee table-responsive">
-      <div class="container-h2">
-        <h2 class="fw-bold">Schedule</h2>
+<section id="schedule" class="text-center p-5 bg-body-light">
+  <div class="container">
+    <h2 class="fw-bold">Schedule</h2>
 
-        <div>
-        <div class="d-flex justify-content-center pt-3 gap-5">
-          <div class="card" style="width: 18rem;">
-            <ul class="list-group list-group-flush">
-              <div class="card text-bg-danger mb-3" style="text-align: center;"> SENIN</li>
-                <li class="list-group-item">Dasar Pemrograman 08.30-10.20 | H.4.7</li>
-                <li class="list-group-item">Kriptografi 12.00-14.20 | H.5.8</li>
-            </ul>
-          </div>
-    
-          <div class="card" style="width: 18rem;">
-            <ul class="list-group list-group-flush">
-              <div class="card text-bg-danger mb-3" style="max-width: 18rem; text-align: center;"> SELASA</li>
-                <li class="list-group-item">Sistem Operasi 10.20-12.00 | H.4.8</li>
-                <li class="list-group-item">Basis Data 07.00-09.30 | D.2.J</li>
-            </ul>
-          </div>
-    
-          <div class="card" style="width: 18rem;">
-            <ul class="list-group list-group-flush">
-              <div class="card text-bg-danger mb-3" style="max-width: 18rem; text-align: center;"> RABU</li>
-                <li class="list-group-item">Logika Informatika 07.00-09.30 | H.4.8</li>
-                <li class="list-group-item">Kalkulus 11.00-13.30</li>
-            </ul>
-          </div>
-    
-          <div class="card" style="width: 18rem;">
-            <ul class="list-group list-group-flush">
-              <div class="card text-bg-danger mb-3" style="max-width: 18rem; text-align: center;"> KAMIS</li>
-                <li class="list-group-item">Pendidikan Pancasila 08.30-10.20 | H.7.1</li>
-                <li class="list-group-item"> Basis Data 13.20-15.30 | D.2.J</li>
-            </ul>
-          </div>
+    <!-- Row to group the schedule cards in 3 columns -->
+    <div class="row pt-3">
+      <!-- Monday -->
+      <div class="col-md-4">
+        <div class="card text-bg-danger mb-3">
+          <div class="card-header text-center">SENIN</div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Dasar Pemrograman 08.30-10.20 | H.4.7</li>
+            <li class="list-group-item">Kriptografi 12.00-14.20 | H.5.8</li>
+          </ul>
         </div>
-    <div>
-      <div class="d-flex justify-content-end pt-3 gap-5">          <div class="card" style="width: 18rem;">
-            <ul class="list-group list-group-flush">
-              <div class="card text-bg-danger mb-3" style="max-width: 18rem; text-align: center;"> JUMAT</li>
-                <li class="list-group-item">Rekayasa Perangkat Lunak 07.20-09.30 | H.5.3</li>
-                <li class="list-group-item">Fisika 09.30-11.30 | H.5.6</li>
-            </ul>
-          </div>
-          <div class="card" style="width: 18rem;">
-            <ul class="list-group list-group-flush">
-              <div class="card text-bg-danger mb-3" style="max-width: 18rem; text-align: center;"> SABTU</li>
-                <li class="list-group-item">Dasar Komputasi 09.30-11.20 | D.3.M</li>
-                <li class="list-group-item">Keamanan Data 12.30-15.20 | D.3.M</li>
-            </ul>
-          </div>
+      </div>
+
+      <!-- Tuesday -->
+      <div class="col-md-4">
+        <div class="card text-bg-danger mb-3">
+          <div class="card-header text-center">SELASA</div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Sistem Operasi 10.20-12.00 | H.4.8</li>
+            <li class="list-group-item">Basis Data 07.00-09.30 | D.2.J</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Wednesday -->
+      <div class="col-md-4">
+        <div class="card text-bg-danger mb-3">
+          <div class="card-header text-center">RABU</div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Logika Informatika 07.00-09.30 | H.4.8</li>
+            <li class="list-group-item">Kalkulus 11.00-13.30</li>
+          </ul>
         </div>
       </div>
     </div>
-  </section>
+
+    <!-- Row for Friday, Saturday, Sunday -->
+    <div class="row pt-3">
+      <!-- Thursday -->
+      <div class="col-md-4">
+        <div class="card text-bg-danger mb-3">
+          <div class="card-header text-center">KAMIS</div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Pendidikan Pancasila 08.30-10.20 | H.7.1</li>
+            <li class="list-group-item">Basis Data 13.20-15.30 | D.2.J</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Friday -->
+      <div class="col-md-4">
+        <div class="card text-bg-danger mb-3">
+          <div class="card-header text-center">JUMAT</div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Rekayasa Perangkat Lunak 07.20-09.30 | H.5.3</li>
+            <li class="list-group-item">Fisika 09.30-11.30 | H.5.6</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Saturday -->
+      <div class="col-md-4">
+        <div class="card text-bg-danger mb-3">
+          <div class="card-header text-center">SABTU</div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Dasar Komputasi 09.30-11.20 | D.3.M</li>
+            <li class="list-group-item">Keamanan Data 12.30-15.20 | D.3.M</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
   <section id="About" class="bg-light py-5">
     <div class="container text-center" style="background-image: url(img/foto1.jpg);">
@@ -229,7 +260,7 @@ include "koneksi.php";
         A11.2023.15015
         Bagas Syifa Pratama
         Program Studi Teknik Informatika 
-        UNiversitas Dian Nuswantoro
+        Universitas Dian Nuswantoro
       </p>
     </div>
   </section>
